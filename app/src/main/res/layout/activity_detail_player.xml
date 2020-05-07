@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".DetailPlayerActivity">
+
+    <com.demos.vedioplaybygsyplayer.view.EmptyControlVideo
+        android:id="@+id/empty_player"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_centerInParent="true" />
+
+    <Button
+        android:id="@+id/btn_pixel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="switchPixel"
+        android:padding="10dp"
+        android:text="切换清晰度" />
+
+    <Button
+        android:id="@+id/btn_capture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="capture"
+        android:padding="10dp"
+        android:text="抓图" />
+
+    <Button
+        android:id="@+id/btn_full"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="toFull"
+        android:padding="10dp"
+        android:text="全屏" />
+
+    <Button
+        android:id="@+id/btn_multi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="switchScreens"
+        android:padding="10dp"
+        android:text="多分屏" />
+
+
+</LinearLayout>
