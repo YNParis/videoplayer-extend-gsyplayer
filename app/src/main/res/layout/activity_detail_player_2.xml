@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:text="title" />
+
+    <com.demos.vedioplaybygsyplayer.view.LandLayoutVideo
+        android:id="@+id/single_player"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/layout_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#99000000"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_pixel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="switchPixel"
+            android:padding="10dp"
+            android:text="切换清晰度" />
+
+        <Button
+            android:id="@+id/btn_capture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="capture"
+            android:padding="10dp"
+            android:text="抓图" />
+
+        <Button
+            android:id="@+id/btn_full"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="toFull"
+            android:padding="10dp"
+            android:text="全屏" />
+
+        <Button
+            android:id="@+id/btn_multi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="switchScreens"
+            android:padding="10dp"
+            android:text="多分屏" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/capture_result"
+        android:layout_width="@dimen/seek_bar_image"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="抓图view" />
+    </RelativeLayout>
+
+</LinearLayout>

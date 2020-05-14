@@ -24,6 +24,12 @@ android {
         exclude 'META-INF/*'
         exclude 'META-INF/gradle/*'
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 }
 
 dependencies {

@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
         list.add("单屏");
         list.add("多屏");
         list.add("gsy-详情");
+        list.add("单屏幕播放");
+        list.add("多屏幕播放");
 
         RecyclerView recyclerView = findViewById(R.id.rv_urls);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
@@ -60,14 +62,20 @@ public class MainActivity extends AppCompatActivity {
         Intent intent;
         switch (position) {
             case 0:
+            default:
                 intent = new Intent(this, DetailPlayerActivity.class);
                 break;
             case 1:
                 intent = new Intent(this, ListDetailPlayerActivity.class);
                 break;
             case 2:
-            default:
                 intent = new Intent(this, PlayerActivity.class);
+                break;
+            case 3:
+                intent = new Intent(this, DetailPlayer2Activity.class);
+                break;
+            case 4:
+                intent = new Intent(this, MultiPlayerActivity.class);
                 break;
         }
         startActivity(intent);

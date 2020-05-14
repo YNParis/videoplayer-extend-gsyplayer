@@ -1,6 +1,7 @@
 package com.demos.vedioplaybygsyplayer.view;
 
 import android.content.Context;
+import android.media.AudioManager;
 import android.util.AttributeSet;
 import android.view.Surface;
 
@@ -59,5 +60,29 @@ public class EmptyControlVideo extends StandardGSYVideoPlayer {
     @Override
     protected void pauseLogic(Surface surface, boolean pauseLogic) {
         super.pauseLogic(surface, pauseLogic);
+    }
+
+    @Override
+    public void onVideoResume(boolean seek) {
+        mPauseBeforePrepared = false;
+        if (mCurrentState == CURRENT_STATE_PAUSE) {
+            try {
+                if (mCurrentPosition >= 0 && getGSYVideoManager() != null) {
+                    //注释掉下面的话，可以在返回时继续播放
+                    /*if (seek) {
+                        getGSYVideoManager().seekTo(mCurrentPosition);
+                    }*/
+                    getGSYVideoManager().start();
+                    setStateAndUi(CURRENT_STATE_PLAYING);
+                    if (mAudioManager != null && !mReleaseWhenLossAudio) {
+                        mAudioManager.requestAudioFocus(onAudioFocusChangeListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
+                    }
+                    mCurrentPosition = 0;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+//        super.onVideoResume(seek);
     }
 }

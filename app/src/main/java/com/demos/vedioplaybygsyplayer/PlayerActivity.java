@@ -80,7 +80,6 @@ public class PlayerActivity extends GSYBaseActivityDetail<StandardGSYVideoPlayer
     View loadingView;
 
         private String url = "http://9890.vod.myqcloud.com/9890_4e292f9a3dd011e6b4078980237cc3d3.f20.mp4";
-//    private String url = "rtsp://61.138.102.214:619/1101:admin:paxy2019@10.1.29.53:554:0:0";
     //private String url = "http://livecdn1.news.cn/Live_MajorEvent01Phone/manifest.m3u8";
     //private String url = "https://ruigongkao.oss-cn-shenzhen.aliyuncs.com/transcode/video/source/video/8908d124aa839d0d3fa9593855ef5957.m3u8";
     //private String url2 = "http://ruigongkao.oss-cn-shenzhen.aliyuncs.com/transcode/video/source/video/3aca1a0db8db9418dcbc765848c8903e.m3u8";

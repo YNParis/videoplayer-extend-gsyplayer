@@ -6,11 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.demos.vedioplaybygsyplayer.adapter.PlayerAdapter;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
 
 public class ListDetailPlayerActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
+    PlayerAdapter playerAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
