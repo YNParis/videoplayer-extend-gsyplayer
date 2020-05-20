@@ -22,9 +22,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final List<String> list = new ArrayList<>();
-        list.add("单屏");
-        list.add("多屏");
-        list.add("gsy-详情");
         list.add("单屏幕播放");
         list.add("多屏幕播放");
 
@@ -63,18 +60,10 @@ public class MainActivity extends AppCompatActivity {
         switch (position) {
             case 0:
             default:
+                //旧的
                 intent = new Intent(this, DetailPlayerActivity.class);
                 break;
             case 1:
-                intent = new Intent(this, ListDetailPlayerActivity.class);
-                break;
-            case 2:
-                intent = new Intent(this, PlayerActivity.class);
-                break;
-            case 3:
-                intent = new Intent(this, DetailPlayer2Activity.class);
-                break;
-            case 4:
                 intent = new Intent(this, MultiPlayerActivity.class);
                 break;
         }

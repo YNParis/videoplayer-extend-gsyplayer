@@ -4,46 +4,82 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".DetailPlayerActivity">
+    android:orientation="vertical">
 
-    <com.demos.vedioplaybygsyplayer.view.EmptyControlVideo
-        android:id="@+id/empty_player"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_centerInParent="true" />
+        android:layout_height="100dp"
+        android:text="title" />
 
-    <Button
-        android:id="@+id/btn_pixel"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.demos.vedioplaybygsyplayer.view.LandLayoutVideo
+            android:id="@+id/single_player"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_multi_player"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_bottom"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="switchPixel"
-        android:padding="10dp"
-        android:text="切换清晰度" />
+        android:background="#99000000"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/btn_capture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="capture"
-        android:padding="10dp"
-        android:text="抓图" />
+        <Button
+            android:id="@+id/btn_pixel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="switchPixel"
+            android:padding="10dp"
+            android:text="切换清晰度" />
 
-    <Button
-        android:id="@+id/btn_full"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="toFull"
-        android:padding="10dp"
-        android:text="全屏" />
+        <Button
+            android:id="@+id/btn_capture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="capture"
+            android:padding="10dp"
+            android:text="抓图" />
 
-    <Button
-        android:id="@+id/btn_multi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="switchScreens"
-        android:padding="10dp"
-        android:text="多分屏" />
+        <Button
+            android:id="@+id/btn_full"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="toFull"
+            android:padding="10dp"
+            android:text="全屏" />
 
+        <Button
+            android:id="@+id/btn_multi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="switchScreens"
+            android:padding="10dp"
+            android:text="多分屏" />
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/capture_result"
+        android:layout_width="@dimen/seek_bar_image"
+        android:layout_height="100dp"
+        android:background="@color/colorPrimary"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="抓图view" />
+    </RelativeLayout>
 
 </LinearLayout>

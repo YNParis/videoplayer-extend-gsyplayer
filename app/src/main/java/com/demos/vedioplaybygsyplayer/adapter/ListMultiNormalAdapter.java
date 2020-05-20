@@ -35,10 +35,9 @@ public class ListMultiNormalAdapter extends BaseAdapter {
         super();
         this.context = context;
         inflater = LayoutInflater.from(context);
-        for (int i = 0; i < 40; i++) {
+        for (int i = 0; i < 4; i++) {
             list.add(new VideoModel());
         }
-
     }
 
     @Override
@@ -117,6 +116,7 @@ public class ListMultiNormalAdapter extends BaseAdapter {
                 super.onAutoComplete(url, objects);
             }
         });
+        holder.gsyVideoPlayer.startPlayLogic();
         return convertView;
     }
 

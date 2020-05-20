@@ -18,6 +18,9 @@ import java.util.Map;
 
 import butterknife.ButterKnife;
 
+/**
+ * 多通道同时播放
+ */
 public class MultiPlayerActivity extends AppCompatActivity {
 
     ListView videoList;
@@ -73,6 +76,7 @@ public class MultiPlayerActivity extends AppCompatActivity {
             }
 
         });
+
     }
 
     @Override

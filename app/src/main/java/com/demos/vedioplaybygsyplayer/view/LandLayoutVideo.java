@@ -80,9 +80,14 @@ public class LandLayoutVideo extends StandardGSYVideoPlayer {
         Toast.makeText(context, "删除", Toast.LENGTH_SHORT).show();
     }
 
+    public void setFullScreen(boolean isFull) {
+        mIfCurrentIsFullscreen = isFull;
+    }
+
     //这个必须配置最上面的构造才能生效
     @Override
     public int getLayoutId() {
+
         if (mIfCurrentIsFullscreen) {
             Log.e("single_video", "-------single_video_land");
             return R.layout.single_video_land;
@@ -149,12 +154,4 @@ public class LandLayoutVideo extends StandardGSYVideoPlayer {
         //changeUiToNormal();
     }
 
-    public void showCaptureResult() {
-        if (captureResultView == null) {
-            captureResultView = findViewById(R.id.capture_result);
-        }
-        if (captureResultView.getVisibility() != VISIBLE) {
-            captureResultView.setVisibility(VISIBLE);
-        }
-    }
 }

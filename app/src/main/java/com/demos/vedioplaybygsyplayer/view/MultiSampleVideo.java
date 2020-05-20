@@ -1,6 +1,9 @@
 package com.demos.vedioplaybygsyplayer.view;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Point;
 import android.media.AudioManager;
 import android.text.TextUtils;
@@ -9,6 +12,7 @@ import android.util.AttributeSet;
 import com.demos.vedioplaybygsyplayer.R;
 import com.demos.vedioplaybygsyplayer.manager.CustomManager;
 import com.shuyu.gsyvideoplayer.utils.Debuger;
+import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.shuyu.gsyvideoplayer.video.base.GSYBaseVideoPlayer;
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoViewBridge;
@@ -129,5 +133,33 @@ public class MultiSampleVideo extends StandardGSYVideoPlayer {
             Debuger.printfError(getClass().getSimpleName() + " used getKey() " + "******* PlayTag never set. ********");
         }
         return TAG + mPlayPosition + mPlayTag;
+    }
+
+    /**
+     * 旋转处理
+     *
+     * @param activity         页面
+     * @param newConfig        配置
+     * @param orientationUtils 旋转工具类
+     * @param hideActionBar    是否隐藏actionbar
+     * @param hideStatusBar    是否隐藏statusbar
+     */
+    public void onConfigurationChanged(Activity activity, Configuration newConfig, OrientationUtils orientationUtils, boolean hideActionBar, boolean hideStatusBar) {
+        super.onConfigurationChanged(newConfig);
+        //如果旋转了就全屏
+        if (newConfig.orientation == ActivityInfo.SCREEN_ORIENTATION_USER) {
+            if (!isIfCurrentIsFullscreen()) {
+                startWindowFullscreen(activity, hideActionBar, hideStatusBar);
+            }
+        } else {
+            //新版本isIfCurrentIsFullscreen的标志位内部提前设置了，所以不会和手动点击冲突
+            if (isIfCurrentIsFullscreen() && !isVerticalFullByVideoSize()) {
+                backFromFull(activity);
+            }
+            if (orientationUtils != null) {
+                orientationUtils.setEnable(true);
+            }
+        }
+
     }
 }
