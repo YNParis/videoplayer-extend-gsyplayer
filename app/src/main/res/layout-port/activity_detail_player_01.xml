@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.demos.vedioplaybygsyplayer.view.LandLayoutVideo
+        <com.demos.vedioplaybygsyplayer.view.MultiSampleVideo
             android:id="@+id/single_player"
             android:layout_width="match_parent"
             android:layout_height="200dp" />
@@ -76,10 +76,10 @@
         android:background="@color/colorPrimary"
         android:visibility="gone">
 
-        <TextView
+        <ImageView
+            android:id="@+id/img_file"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="抓图view" />
+            android:layout_height="wrap_content" />
     </RelativeLayout>
 
 </LinearLayout>

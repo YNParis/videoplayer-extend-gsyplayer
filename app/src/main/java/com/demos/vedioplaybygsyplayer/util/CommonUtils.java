@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 
 /**
@@ -29,14 +30,25 @@ public class CommonUtils {
         view.setLayoutParams(layoutParams);
     }
 
-    public static void saveBitmap(Bitmap bitmap) throws FileNotFoundException {
+    public static File saveBitmap(Bitmap bitmap) throws FileNotFoundException {
+        File file = null;
         if (bitmap != null) {
-            File file = new File(getPath(), "capture" + System.currentTimeMillis() + ".jpg");
+            file = new File(getPath(), "capture" + System.currentTimeMillis() + ".jpg");
+            if (!file.exists()) {
+                boolean hasFile = false;
+                try {
+                    hasFile = file.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
             OutputStream outputStream;
             outputStream = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
             bitmap.recycle();
         }
+        return file;
     }
 
     public static String getAppPath(String name) {
@@ -56,6 +68,5 @@ public class CommonUtils {
         }
         return path;
     }
-
 
 }

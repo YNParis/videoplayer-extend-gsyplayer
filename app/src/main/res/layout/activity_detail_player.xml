@@ -2,28 +2,39 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/titleBar"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:text="title" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:text="title" />
+    </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/player_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <com.demos.vedioplaybygsyplayer.view.LandLayoutVideo
             android:id="@+id/single_player"
             android:layout_width="match_parent"
-            android:layout_height="200dp" />
+            android:layout_height="wrap_content"
+            android:minHeight="200dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_multi_player"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <LinearLayout
@@ -76,10 +87,11 @@
         android:background="@color/colorPrimary"
         android:visibility="gone">
 
-        <TextView
+        <ImageView
+            android:id="@+id/img_file"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="抓图view" />
+            android:layout_height="wrap_content" />
+
     </RelativeLayout>
 
 </LinearLayout>
