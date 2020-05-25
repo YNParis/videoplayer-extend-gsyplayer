@@ -1,11 +1,14 @@
 package com.demos.vedioplaybygsyplayer;
 
+import android.Manifest;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import permissions.dispatcher.PermissionUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +29,11 @@ public class MainActivity extends AppCompatActivity {
         final List<String> list = new ArrayList<>();
         list.add("单屏幕播放");
         list.add("多屏幕播放");
+        boolean hadPermission = PermissionUtils.hasSelfPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !hadPermission) {
+            String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            requestPermissions(permissions, 1110);
+        }
 
         RecyclerView recyclerView = findViewById(R.id.rv_urls);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
@@ -53,6 +63,15 @@ public class MainActivity extends AppCompatActivity {
                 return list.size();
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        boolean sdPermissionResult = PermissionUtils.verifyPermissions(grantResults);
+        if (!sdPermissionResult) {
+            Toast.makeText(this, "没获取到sd卡权限会影响到部分功能的使用", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void skipTo(int position) {

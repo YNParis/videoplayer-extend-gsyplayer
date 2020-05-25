@@ -1,6 +1,7 @@
 package com.demos.vedioplaybygsyplayer.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.demos.vedioplaybygsyplayer.R;
 import com.demos.vedioplaybygsyplayer.bean.VideoModel;
+import com.demos.vedioplaybygsyplayer.util.CommonUtils;
 import com.demos.vedioplaybygsyplayer.view.MultiSampleVideo;
 
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
     private Context context;
     private String fullKey = "null";
     private List<VideoModel> list = new ArrayList<>();
+    private List<MultiSampleVideo> playerList = new ArrayList<>();
 
     public PlayerAdapter(Context context) {
         this.context = context;
@@ -46,7 +49,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
         //多个播放时必须在setUpLazy、setUp和getGSYVideoManager()等前面设置
         //多个播放时必须在setUpLazy、setUp和getGSYVideoManager()等前面设置
         final String url = "http://9890.vod.myqcloud.com/9890_4e292f9a3dd011e6b4078980237cc3d3.f20.mp4";
-
+        playerList.add(holder.player);
         //多个播放时必须在setUpLazy、setUp和getGSYVideoManager()等前面设置
         holder.player.setPlayTag(TAG);
         holder.player.setPlayPosition(position);
@@ -78,6 +81,14 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
         public PlayerViewHolder(@NonNull View itemView) {
             super(itemView);
             player = itemView.findViewById(R.id.player_item);
+        }
+    }
+
+    public void capture() {
+        int i = 0;
+        for (MultiSampleVideo player : playerList) {
+            CommonUtils.capture(player);
+            Log.e("file", "成功" + (++i));
         }
     }
 

@@ -20,5 +20,4 @@ public class Constants {
             "?auth_key=1589447618-0-0-7d5507c4640d63d32b894786feaed1d7";
 
     public static final String URL = URL_1;
-    public static boolean isSingle = true;
 }

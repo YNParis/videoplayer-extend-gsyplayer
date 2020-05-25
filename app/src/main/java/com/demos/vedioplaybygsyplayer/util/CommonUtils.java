@@ -2,13 +2,16 @@ package com.demos.vedioplaybygsyplayer.util;
 
 import android.graphics.Bitmap;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.shuyu.gsyvideoplayer.listener.GSYVideoShotListener;
+import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 
 /**
@@ -33,20 +36,12 @@ public class CommonUtils {
     public static File saveBitmap(Bitmap bitmap) throws FileNotFoundException {
         File file = null;
         if (bitmap != null) {
-            file = new File(getPath(), "capture" + System.currentTimeMillis() + ".jpg");
-            if (!file.exists()) {
-                boolean hasFile = false;
-                try {
-                    hasFile = file.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return null;
-                }
-            }
+            file = new File(getPath(), "GSY-" + System.currentTimeMillis() + ".jpg");
             OutputStream outputStream;
             outputStream = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
             bitmap.recycle();
+            Log.e("file_save", "图片保存成功");
         }
         return file;
     }
@@ -67,6 +62,28 @@ public class CommonUtils {
             file.mkdirs();
         }
         return path;
+    }
+
+    public static void capture(StandardGSYVideoPlayer player) {
+        player.taskShotPic(new GSYVideoShotListener() {
+            @Override
+            public void getBitmap(Bitmap bitmap) {
+                try {
+                    File file = CommonUtils.saveBitmap(bitmap);
+
+                    uploadPic(file);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public static void uploadPic(File file) {
+        if (file == null) {
+            Log.e("file", "file==null");
+        }
+        Log.e("file", "上传照片");
     }
 
 }

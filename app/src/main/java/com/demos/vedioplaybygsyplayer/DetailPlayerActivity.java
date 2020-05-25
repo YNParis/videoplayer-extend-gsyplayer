@@ -3,8 +3,6 @@ package com.demos.vedioplaybygsyplayer;
 import android.Manifest;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,10 +22,6 @@ import com.demos.vedioplaybygsyplayer.adapter.PlayerAdapter;
 import com.demos.vedioplaybygsyplayer.util.CommonUtils;
 import com.demos.vedioplaybygsyplayer.view.LandLayoutVideo;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
-import com.shuyu.gsyvideoplayer.listener.GSYVideoShotListener;
-
-import java.io.File;
-import java.io.FileNotFoundException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,7 +29,7 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class DetailPlayerActivity extends AppCompatActivity {
+public class DetailPlayerActivity extends AppCompatActivity implements View.OnClickListener {
 
     @BindView(R.id.single_player)
     LandLayoutVideo detailPlayer;
@@ -50,13 +45,23 @@ public class DetailPlayerActivity extends AppCompatActivity {
 
     @BindView(R.id.layout_bottom)
     LinearLayout layoutBottom;
+    @BindView(R.id.layout_bottom_inside)
+    LinearLayout layoutBottomInside;
 
     @BindView(R.id.img_file)
     ImageView imageView;
     @BindView(R.id.titleBar)
     LinearLayout titleBar;
+    @BindView(R.id.title_bar_inside)
+    LinearLayout titleBarInside;
+
+    @BindView(R.id.btn_list)
+    TextView btnList;
+    @BindView(R.id.btn_list_inside)
+    TextView btnListInside;
 
     private PlayerAdapter playerAdapter;
+    private boolean isSingle = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +70,16 @@ public class DetailPlayerActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 //        GSYVideoManager.instance().enableRawPlay(getApplicationContext());
         initPlay();
+        initClick();
+    }
+
+    private void initClick() {
+        //初始化后的点击事件，竖屏
+        btnList.setOnClickListener(this);
     }
 
     private void initPlay() {
-        if (Constants.isSingle) {
+        if (isSingle) {
             detailPlayer.setUp(Constants.URL, true, "测试视频");
             detailPlayer.startPlayLogic();
         } else {
@@ -92,7 +103,7 @@ public class DetailPlayerActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         GSYVideoManager.releaseAllVideos();
-        Constants.isSingle = true;
+        isSingle = true;
     }
 
     @Override
@@ -109,7 +120,8 @@ public class DetailPlayerActivity extends AppCompatActivity {
     }
 
     /**
-     * 切换清晰度,参考无缝切换样例
+     * 切换清晰度
+     * TODO 待参考无缝切换样例
      *
      * @param view
      */
@@ -122,27 +134,13 @@ public class DetailPlayerActivity extends AppCompatActivity {
 
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     public void capture(View view) {
-        toast("抓图");
-        detailPlayer.taskShotPic(new GSYVideoShotListener() {
-            @Override
-            public void getBitmap(Bitmap bitmap) {
-                try {
-                    File file = CommonUtils.saveBitmap(bitmap);
-                    if (file != null) {
-                        Uri fileUri = Uri.fromFile(file);
-                        toast("抓图成功");
-                        showCaptureResult();
-                        imageView.setImageURI(fileUri);
-                    } else {
-                        toast("抓图失败");
-                    }
-                } catch (FileNotFoundException e) {
-                    toast("抓图失败");
-                    e.printStackTrace();
-                }
-            }
-        });
-
+        if (isSingle) {
+            toast("单屏抓图");
+            CommonUtils.capture(detailPlayer);
+            return;
+        }
+        toast("多屏抓图");
+        playerAdapter.capture();
     }
 
     private void showCaptureResult() {
@@ -179,8 +177,10 @@ public class DetailPlayerActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 竖屏时修改控件的参数
+     */
     private void setPortraitViews() {
-
 
     }
 
@@ -188,13 +188,14 @@ public class DetailPlayerActivity extends AppCompatActivity {
         titleBar.setVisibility(View.GONE);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         playerView.setLayoutParams(params);
+        detailPlayer.setOnClickListener(this);
     }
 
     public void switchScreens(View view) {
         if (detailPlayer.getVisibility() != View.VISIBLE) {
             recyclerView.setVisibility(View.GONE);
             detailPlayer.setVisibility(View.VISIBLE);
-            Constants.isSingle = true;
+            isSingle = true;
             return;
         }
         if (playerAdapter == null) {
@@ -204,10 +205,38 @@ public class DetailPlayerActivity extends AppCompatActivity {
         }
         detailPlayer.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
-        Constants.isSingle = false;
+        isSingle = false;
     }
 
     private void toast(String toast) {
         Toast.makeText(this, toast, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_list:
+            case R.id.btn_list_inside:
+                //打开播放列表
+                openListWindow();
+                break;
+            case R.id.single_player:
+                //显示title和bottom
+                showFunctions();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void showFunctions() {
+        //全屏时显示titlebar和底部功能栏
+        //TODO 定时任务，无操作5秒后隐藏
+        titleBarInside.setVisibility(View.VISIBLE);
+        btnListInside.setOnClickListener(this);
+    }
+
+    private void openListWindow() {
+        toast("打开列表");
     }
 }
