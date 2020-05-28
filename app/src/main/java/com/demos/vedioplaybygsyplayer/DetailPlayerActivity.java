@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -50,6 +49,12 @@ public class DetailPlayerActivity extends AppCompatActivity implements View.OnCl
 
     @BindView(R.id.img_file)
     ImageView imageView;
+    @BindView(R.id.capture_result)
+    RelativeLayout captureResult;
+    @BindView(R.id.capture_result_inside)
+    RelativeLayout captureResultInside;
+
+
     @BindView(R.id.titleBar)
     LinearLayout titleBar;
     @BindView(R.id.title_bar_inside)
@@ -74,8 +79,9 @@ public class DetailPlayerActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void initClick() {
-        //初始化后的点击事件，竖屏
+        //初始化后的点击事件
         btnList.setOnClickListener(this);
+        btnListInside.setOnClickListener(this);
     }
 
     private void initPlay() {
@@ -109,7 +115,7 @@ public class DetailPlayerActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onBackPressed() {
         //先返回正常状态
-        toast("onback:" + ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        CommonUtils.toast(this, "onback:" + ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
             toFull(null);
             return;
@@ -135,11 +141,11 @@ public class DetailPlayerActivity extends AppCompatActivity implements View.OnCl
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     public void capture(View view) {
         if (isSingle) {
-            toast("单屏抓图");
+            CommonUtils.toast(this, "单屏抓图");
             CommonUtils.capture(detailPlayer);
             return;
         }
-        toast("多屏抓图");
+        CommonUtils.toast(this, "多屏抓图");
         playerAdapter.capture();
     }
 
@@ -147,7 +153,7 @@ public class DetailPlayerActivity extends AppCompatActivity implements View.OnCl
         if (findViewById(R.id.capture_result) != null) {
             findViewById(R.id.capture_result).setVisibility(View.VISIBLE);
         } else {
-            toast("没找到view");
+            CommonUtils.toast(this, "没找到view");
         }
     }
 
@@ -159,7 +165,6 @@ public class DetailPlayerActivity extends AppCompatActivity implements View.OnCl
         } else if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
             Log.e("video", "屏幕方向：SCREEN_ORIENTATION_PORTRAIT");
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            //TODO 隐藏状态栏，导航栏
         }
     }
 
@@ -182,13 +187,29 @@ public class DetailPlayerActivity extends AppCompatActivity implements View.OnCl
      */
     private void setPortraitViews() {
 
+        titleBar.setVisibility(View.VISIBLE);
+        titleBarInside.setVisibility(View.GONE);
+        layoutBottomInside.setVisibility(View.GONE);
+        captureResultInside.setVisibility(View.GONE);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        playerView.setLayoutParams(params);
+        playerView.setOnClickListener(null);
+
     }
 
     private void setLandscapeViews() {
+        //titleBar隐藏
         titleBar.setVisibility(View.GONE);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         playerView.setLayoutParams(params);
-        detailPlayer.setOnClickListener(this);
+        playerView.setOnClickListener(this);
+        detailPlayer.setCustomOnClickListener(new LandLayoutVideo.CustomOnClickListener() {
+            @Override
+            public void onSingleTap() {
+                showFunctions();
+//                CommonUtils.toast(DetailPlayerActivity.this, "单击");
+            }
+        });
     }
 
     public void switchScreens(View view) {
@@ -208,10 +229,6 @@ public class DetailPlayerActivity extends AppCompatActivity implements View.OnCl
         isSingle = false;
     }
 
-    private void toast(String toast) {
-        Toast.makeText(this, toast, Toast.LENGTH_SHORT).show();
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -219,10 +236,6 @@ public class DetailPlayerActivity extends AppCompatActivity implements View.OnCl
             case R.id.btn_list_inside:
                 //打开播放列表
                 openListWindow();
-                break;
-            case R.id.single_player:
-                //显示title和bottom
-                showFunctions();
                 break;
             default:
                 break;
@@ -233,10 +246,17 @@ public class DetailPlayerActivity extends AppCompatActivity implements View.OnCl
         //全屏时显示titlebar和底部功能栏
         //TODO 定时任务，无操作5秒后隐藏
         titleBarInside.setVisibility(View.VISIBLE);
-        btnListInside.setOnClickListener(this);
+        layoutBottomInside.setVisibility(View.VISIBLE);
+    }
+
+    private void hideFunctions() {
+        //全屏时显示titlebar和底部功能栏
+        //TODO 定时任务，无操作5秒后隐藏
+        titleBarInside.setVisibility(View.GONE);
+        layoutBottomInside.setVisibility(View.GONE);
     }
 
     private void openListWindow() {
-        toast("打开列表");
+        CommonUtils.toast(this, "打开列表");
     }
 }

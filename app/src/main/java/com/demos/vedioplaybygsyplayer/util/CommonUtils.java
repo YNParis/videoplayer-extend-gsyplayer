@@ -1,10 +1,12 @@
 package com.demos.vedioplaybygsyplayer.util;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.shuyu.gsyvideoplayer.listener.GSYVideoShotListener;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
@@ -84,6 +86,10 @@ public class CommonUtils {
             Log.e("file", "file==null");
         }
         Log.e("file", "上传照片");
+    }
+
+    public static void toast(Context context, String toast) {
+        Toast.makeText(context, toast, Toast.LENGTH_SHORT).show();
     }
 
 }

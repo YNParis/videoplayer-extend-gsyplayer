@@ -29,7 +29,7 @@
             android:id="@+id/single_player"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="200dp" />
+            android:minHeight="150dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_multi_player"
@@ -52,6 +52,20 @@
                 android:layout_height="80dp"
                 android:text="title" />
         </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/capture_result_inside"
+            android:layout_width="@dimen/seek_bar_image"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            android:background="@color/colorPrimary"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/layout_bottom_inside"
@@ -93,7 +107,6 @@
                 android:onClick="switchScreens"
                 android:padding="10dp"
                 android:text="多分屏" />
-
 
         </LinearLayout>
 

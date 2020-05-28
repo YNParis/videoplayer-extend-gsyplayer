@@ -23,6 +23,7 @@ public class LandLayoutVideo extends StandardGSYVideoPlayer {
 
     private Context context;
     private View captureResultView;
+    private CustomOnClickListener customOnClickListener;
 
     /**
      * 1.5.0开始加入，如果需要不同布局区分功能，需要重载
@@ -58,9 +59,8 @@ public class LandLayoutVideo extends StandardGSYVideoPlayer {
 
                     @Override
                     public boolean onSingleTapConfirmed(MotionEvent e) {
-                        if (!mChangePosition && !mChangeVolume && !mBrightness) {
-                            onClickUiToggle();
-                        }
+                        if (customOnClickListener != null)
+                            customOnClickListener.onSingleTap();
                         return super.onSingleTapConfirmed(e);
                     }
 
@@ -73,6 +73,10 @@ public class LandLayoutVideo extends StandardGSYVideoPlayer {
                 });
             }
         });
+    }
+
+    public void showFunctionBar() {
+
     }
 
     private void showDeleteView() {
@@ -154,4 +158,12 @@ public class LandLayoutVideo extends StandardGSYVideoPlayer {
         //changeUiToNormal();
     }
 
+    public interface CustomOnClickListener {
+        void onSingleTap();
+//        void onLongPress();
+    }
+
+    public void setCustomOnClickListener(CustomOnClickListener listener) {
+        customOnClickListener = listener;
+    }
 }
