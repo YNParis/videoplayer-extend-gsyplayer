@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,36 +29,37 @@ import permissions.dispatcher.RuntimePermissions;
 @RuntimePermissions
 public class DetailPlayerActivity extends AppCompatActivity implements View.OnClickListener {
 
-    @BindView(R.id.single_player)
-    LandLayoutVideo detailPlayer;
-
-    @BindView(R.id.rv_multi_player)
-    RecyclerView recyclerView;
-
+    //根布局
     @BindView(R.id.root_layout)
     LinearLayout rootView;
 
+    //播放view
     @BindView(R.id.player_view)
     RelativeLayout playerView;
+    @BindView(R.id.single_player)
+    LandLayoutVideo detailPlayer;
+    @BindView(R.id.rv_multi_player)
+    RecyclerView recyclerView;
 
+    //底部菜单
     @BindView(R.id.layout_bottom)
     LinearLayout layoutBottom;
     @BindView(R.id.layout_bottom_inside)
     LinearLayout layoutBottomInside;
 
-    @BindView(R.id.img_file)
-    ImageView imageView;
+    //抓图结果
     @BindView(R.id.capture_result)
     RelativeLayout captureResult;
     @BindView(R.id.capture_result_inside)
     RelativeLayout captureResultInside;
 
-
+    //标题栏
     @BindView(R.id.titleBar)
     LinearLayout titleBar;
     @BindView(R.id.title_bar_inside)
     LinearLayout titleBarInside;
 
+    //列表按钮
     @BindView(R.id.btn_list)
     TextView btnList;
     @BindView(R.id.btn_list_inside)
@@ -67,6 +67,8 @@ public class DetailPlayerActivity extends AppCompatActivity implements View.OnCl
 
     private PlayerAdapter playerAdapter;
     private boolean isSingle = true;
+    private int currentPosition = -1;
+    private boolean isFull;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,7 +188,7 @@ public class DetailPlayerActivity extends AppCompatActivity implements View.OnCl
      * 竖屏时修改控件的参数
      */
     private void setPortraitViews() {
-
+        isFull = false;
         titleBar.setVisibility(View.VISIBLE);
         titleBarInside.setVisibility(View.GONE);
         layoutBottomInside.setVisibility(View.GONE);
@@ -198,6 +200,7 @@ public class DetailPlayerActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void setLandscapeViews() {
+        isFull = true;
         //titleBar隐藏
         titleBar.setVisibility(View.GONE);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -221,6 +224,25 @@ public class DetailPlayerActivity extends AppCompatActivity implements View.OnCl
         }
         if (playerAdapter == null) {
             playerAdapter = new PlayerAdapter(this);
+            playerAdapter.setPlayerViewClickListener(new PlayerAdapter.PlayerViewClickListener() {
+                @Override
+                public void onClick(int position) {
+                    if (isFull) showFunctions();
+                    CommonUtils.toast(DetailPlayerActivity.this, "点击" + position);
+
+                }
+
+                @Override
+                public void onLongClick(int position) {
+                    CommonUtils.toast(DetailPlayerActivity.this, "长按" + position);
+
+                }
+
+                @Override
+                public void delete(int position) {
+                    CommonUtils.toast(DetailPlayerActivity.this, "删除" + position);
+                }
+            });
             recyclerView.setAdapter(playerAdapter);
             recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         }
@@ -245,18 +267,23 @@ public class DetailPlayerActivity extends AppCompatActivity implements View.OnCl
     private void showFunctions() {
         //全屏时显示titlebar和底部功能栏
         //TODO 定时任务，无操作5秒后隐藏
+        //TODO 再次点击要隐藏功能菜单
         titleBarInside.setVisibility(View.VISIBLE);
         layoutBottomInside.setVisibility(View.VISIBLE);
     }
-
+    
     private void hideFunctions() {
-        //全屏时显示titlebar和底部功能栏
-        //TODO 定时任务，无操作5秒后隐藏
         titleBarInside.setVisibility(View.GONE);
         layoutBottomInside.setVisibility(View.GONE);
     }
 
     private void openListWindow() {
         CommonUtils.toast(this, "打开列表");
+    }
+
+    public void modify(View view) {
+        if (playerAdapter != null) {
+            playerAdapter.modifyChannel(playerAdapter.getCurrentPosition(), Constants.URL_2);
+        }
     }
 }

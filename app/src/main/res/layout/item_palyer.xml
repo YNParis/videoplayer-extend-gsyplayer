@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -7,6 +8,15 @@
     <com.demos.vedioplaybygsyplayer.view.MultiSampleVideo
         android:id="@+id/player_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp" />
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/btn_delete_play_window"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerInParent="true"
+        android:src="@mipmap/img_delete"
+        android:visibility="gone" />
+
+</RelativeLayout>

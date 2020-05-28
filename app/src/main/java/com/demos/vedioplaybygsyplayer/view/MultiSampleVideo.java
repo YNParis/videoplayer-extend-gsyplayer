@@ -8,6 +8,8 @@ import android.graphics.Point;
 import android.media.AudioManager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 
 import com.demos.vedioplaybygsyplayer.R;
 import com.demos.vedioplaybygsyplayer.manager.CustomManager;
@@ -30,6 +32,7 @@ public class MultiSampleVideo extends StandardGSYVideoPlayer {
     String mCoverOriginUrl;
 
     int mDefaultRes;
+    private MultiPlayerViewClickListener listener;
 
     public MultiSampleVideo(Context context, Boolean fullFlag) {
         super(context, fullFlag);
@@ -46,6 +49,32 @@ public class MultiSampleVideo extends StandardGSYVideoPlayer {
     @Override
     protected void init(Context context) {
         super.init(context);
+        post(new Runnable() {
+            @Override
+            public void run() {
+                gestureDetector = new GestureDetector(getContext().getApplicationContext(), new GestureDetector.SimpleOnGestureListener() {
+                    @Override
+                    public boolean onDoubleTap(MotionEvent e) {
+                        return super.onDoubleTap(e);
+                    }
+
+                    @Override
+                    public boolean onSingleTapConfirmed(MotionEvent e) {
+                        if (listener != null)
+                            listener.onClick();
+                        return super.onSingleTapConfirmed(e);
+                    }
+
+                    @Override
+                    public void onLongPress(MotionEvent e) {
+                        if (listener != null)
+                            listener.onLongClick();
+                        super.onLongPress(e);
+                    }
+                });
+            }
+        });
+
         if (mThumbImageViewLayout != null &&
                 (mCurrentState == -1 || mCurrentState == CURRENT_STATE_NORMAL || mCurrentState == CURRENT_STATE_ERROR)) {
             mThumbImageViewLayout.setVisibility(VISIBLE);
@@ -162,4 +191,15 @@ public class MultiSampleVideo extends StandardGSYVideoPlayer {
         }
 
     }
+
+    public interface MultiPlayerViewClickListener {
+        void onClick();
+
+        void onLongClick();
+    }
+
+    public void setMultiPlayerViewClickListener(MultiPlayerViewClickListener listener) {
+        this.listener = listener;
+    }
+
 }

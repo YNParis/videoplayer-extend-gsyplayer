@@ -35,6 +35,8 @@
             android:id="@+id/rv_multi_player"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark"
+            android:padding="2dp"
             android:visibility="gone" />
 
         <LinearLayout
@@ -154,6 +156,14 @@
 
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_modify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="modify"
+        android:padding="10dp"
+        android:text="切换通道" />
 
     <RelativeLayout
         android:id="@+id/capture_result"
