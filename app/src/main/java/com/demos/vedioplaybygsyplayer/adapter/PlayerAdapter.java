@@ -85,8 +85,8 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
             @Override
             public void onClick() {
                 holder.rootView.setBackground(context.getDrawable(R.drawable.border_selected));
-                if (listener != null) listener.onClick(position);
                 onItemSelected(position);
+                if (listener != null) listener.onClick(position);
                 holder.btnDelete.setVisibility(View.GONE);
             }
 

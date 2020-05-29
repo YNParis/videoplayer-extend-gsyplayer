@@ -75,6 +75,11 @@ public class LandLayoutVideo extends StandardGSYVideoPlayer {
         });
     }
 
+    @Override
+    public void restartTimerTask() {
+        super.restartTimerTask();
+    }
+
     public void showFunctionBar() {
 
     }

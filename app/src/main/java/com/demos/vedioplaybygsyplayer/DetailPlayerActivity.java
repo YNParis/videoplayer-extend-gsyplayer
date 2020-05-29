@@ -69,6 +69,7 @@ public class DetailPlayerActivity extends AppCompatActivity implements View.OnCl
     private boolean isSingle = true;
     private int currentPosition = -1;
     private boolean isFull;
+    private boolean isFunctionsShowing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,6 +139,7 @@ public class DetailPlayerActivity extends AppCompatActivity implements View.OnCl
         detailPlayer.setUp(Constants.URL_2, true, "测试视频2");
         detailPlayer.onVideoReset();
         detailPlayer.startPlayLogic();
+        hideFunctions();
     }
 
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -149,6 +151,7 @@ public class DetailPlayerActivity extends AppCompatActivity implements View.OnCl
         }
         CommonUtils.toast(this, "多屏抓图");
         playerAdapter.capture();
+        hideFunctions();
     }
 
     private void showCaptureResult() {
@@ -210,7 +213,6 @@ public class DetailPlayerActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onSingleTap() {
                 showFunctions();
-//                CommonUtils.toast(DetailPlayerActivity.this, "单击");
             }
         });
     }
@@ -228,8 +230,6 @@ public class DetailPlayerActivity extends AppCompatActivity implements View.OnCl
                 @Override
                 public void onClick(int position) {
                     if (isFull) showFunctions();
-                    CommonUtils.toast(DetailPlayerActivity.this, "点击" + position);
-
                 }
 
                 @Override
@@ -240,6 +240,8 @@ public class DetailPlayerActivity extends AppCompatActivity implements View.OnCl
 
                 @Override
                 public void delete(int position) {
+                    //TODO 删除当前你播放通道，换一个
+                    //TODO 当前数据首先修改，然后在adapter中修改播放的通道
                     CommonUtils.toast(DetailPlayerActivity.this, "删除" + position);
                 }
             });
@@ -249,6 +251,7 @@ public class DetailPlayerActivity extends AppCompatActivity implements View.OnCl
         detailPlayer.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
         isSingle = false;
+        hideFunctions();
     }
 
     @Override
@@ -266,15 +269,22 @@ public class DetailPlayerActivity extends AppCompatActivity implements View.OnCl
 
     private void showFunctions() {
         //全屏时显示titlebar和底部功能栏
-        //TODO 定时任务，无操作5秒后隐藏
+        if (isFunctionsShowing && (isSingle || playerAdapter.getCurrentPosition() == -1)) {
+            hideFunctions();
+            return;
+        }
         //TODO 再次点击要隐藏功能菜单
+        isFunctionsShowing = true;
         titleBarInside.setVisibility(View.VISIBLE);
         layoutBottomInside.setVisibility(View.VISIBLE);
+
     }
-    
+
     private void hideFunctions() {
+        if (!isFull) return;
         titleBarInside.setVisibility(View.GONE);
         layoutBottomInside.setVisibility(View.GONE);
+        isFunctionsShowing = false;
     }
 
     private void openListWindow() {
@@ -286,4 +296,6 @@ public class DetailPlayerActivity extends AppCompatActivity implements View.OnCl
             playerAdapter.modifyChannel(playerAdapter.getCurrentPosition(), Constants.URL_2);
         }
     }
+
+
 }
